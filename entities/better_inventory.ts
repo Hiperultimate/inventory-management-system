@@ -43,9 +43,9 @@ class InventorySystem {
     return true;
   }
 
-  getNearestEmptySlot(): number{
-    for(let i = 0 ; i < this.totalSize; i++){
-      if(this.inventory[i] === undefined) return i;
+  getNearestEmptySlot(): number {
+    for (let i = 0; i < this.totalSize; i++) {
+      if (this.inventory[i] === undefined) return i;
     }
     return -1;
   }
@@ -53,8 +53,8 @@ class InventorySystem {
   // get total number of filled slots inside the inventory
   getCurrentlyFilledSlots() {
     let filledSlots = 0;
-    for(let i = 0; i < this.totalSize; i++){
-      if(this.inventory[i]) filledSlots++;
+    for (let i = 0; i < this.totalSize; i++) {
+      if (this.inventory[i]) filledSlots++;
     }
     return filledSlots;
   }
@@ -67,7 +67,7 @@ class InventorySystem {
     return this.inventory.slice(0, topItemAmount);
   }
 
-  removeItemFromPosition(itemPosition: number) {
+  popItemFromPosition(itemPosition: number): undefined | IInvItem {
     if (itemPosition < 0 || itemPosition > this.totalSize) {
       throw new Error(
         `Invalid position received, inventory position is from ${0}-${
@@ -75,6 +75,14 @@ class InventorySystem {
         }. Received ${itemPosition}`
       );
     }
+
+    if (this.inventory[itemPosition] !== undefined) {
+      const invItem = this.inventory[itemPosition];
+      this.inventory[itemPosition] = undefined;
+      return invItem;
+    }
+
+    return undefined;
   }
 
   // remove item from the inventory
@@ -127,7 +135,7 @@ class InventorySystem {
 
     const positionToAdd = this.getNearestEmptySlot();
 
-    if(positionToAdd === -1){
+    if (positionToAdd === -1) {
       throw new Error("Inventory is currently full");
     }
 
