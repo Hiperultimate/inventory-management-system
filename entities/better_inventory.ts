@@ -143,6 +143,24 @@ class InventorySystem {
   }
 
   // add item to specific position
+  addItemToPosition(itemObject: IItem, amount:number = 1, position: number){
+    if (amount > this.slotStackSize) {
+      throw new Error(
+        `Stack limit exceeded, currently set to ${this.slotStackSize}`
+      );
+    }
+
+    if(!this.isSpaceEmpty(position)){
+      throw new Error(`Position already contains an item`);
+    }
+
+    const newInventoryItem = {
+      ...itemObject,
+      stackAmount: amount,
+    };
+
+    this.inventory[position] = newInventoryItem;
+  }
 }
 
 export default InventorySystem;
